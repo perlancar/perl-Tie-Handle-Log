@@ -10,9 +10,8 @@ use Log::ger;
 sub TIEHANDLE {
     my $class = shift;
 
-    my $ref = {@_};
-    log_trace "TIEHANDLE(%s, %s)", $class, $ref;
-    bless $ref, $class;
+    log_trace "TIEHANDLE(%s, %s)", $class,\@_;
+    bless [], $class;
 }
 
 sub WRITE {
@@ -71,12 +70,12 @@ sub UNTIE {
 
  use Tie::Handle::Log;
 
- tie my $fh, 'Tie::Handle::Log';
+ tie *FH, 'Tie::Handle::Log';
 
  # use like you would a regular filehandle
- print $fh "one", "two";
+ print FH "one", "two";
  ...
- close $fh;
+ close FH;
 
 
 =head1 DESCRIPTION
